@@ -1,18 +1,16 @@
 # Import libs
-
-# %%
 import os
 import logging
 import yfinance as yf
 import pandas as pd
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
+from dbconfig import connect_to_database, create_schema
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# %% 
 def fetch_ticker(ticker, period='5d', interval='1d'):
     """
     Fetch the historical prices for a ticker from yfinance.
@@ -34,14 +32,16 @@ def fetch_ticker(ticker, period='5d', interval='1d'):
         df = hist[["Close"]].copy()
 
         df["ticker"] = ticker
+        logger.info("=======================================")
+        logger.info("Fetching ticker ==> %s.", ticker)
         logger.info("Fetched %s (%d rows).", ticker, len(df))
+        logger.info("=======================================")
         return df
     except Exception:
         logger.exception("Error fetching %s (period=%s, interval=%s).", ticker, period, interval)
         return pd.DataFrame(columns=["Close", "ticker"])
 
 
-# %%
 def concat_tickers(commodities):
     """
     Fetch and combine historical data for multiple tickers.
@@ -62,15 +62,10 @@ def concat_tickers(commodities):
 
     for symbol in commodities:
         df = fetch_ticker(symbol)
-        if not df.empty:       # skip empty results
+        if not df.empty:       
             frames.append(df)
 
-    if not frames:            # nothing collected
+    if not frames:            
         return pd.DataFrame(columns=["Close", "ticker"])
 
     return pd.concat(frames, ignore_index=False)
-
-# %%
-if __name__ == '__main__':
-    commodities = ['CL=F', 'GC=F', 'SI=F', 'BBDC4', 'SAPR4']
-    concatenated_tickers = concat_tickers(commodities)
