@@ -21,7 +21,7 @@ def create_db(database_name):
             user=os.getenv('POSTGRES_USER'),
             password=os.getenv('POSTGRES_PASSWORD'),
             host=os.getenv('POSTGRES_HOST'),
-            port=5432,
+            port=os.getenv('POSTGRES_PORT'),
         )
 
         try:
@@ -52,7 +52,7 @@ def connect_to_database():
             user=os.getenv('POSTGRES_USER'),
             password=os.getenv('POSTGRES_PASSWORD'),
             host=os.getenv('POSTGRES_HOST'),
-            port=5432,
+            port=os.getenv('POSTGRES_PORT')
         )
 
         logger.info(f"Sucessfully connect to the database {os.getenv('POSTGRES_DB')}")
@@ -75,7 +75,7 @@ def create_schema(conn):
             cursor.execute("CREATE SCHEMA IF NOT EXISTS dw_comm;")
             conn.commit()
 
-            logger.info("Schema and table created sucessfully.")
+            logger.info("If not exists schema `dw_conn` will be created.")
     except psycopg2.Error as e:
         logging.error(f"Error creating schema and table: {e}.")
         return None    
