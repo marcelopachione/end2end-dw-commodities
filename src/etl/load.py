@@ -42,7 +42,7 @@ def save_to_db(df, table_name):
                 con=conn,
                 if_exists='append',
                 index=True,
-                index_label='Date',
+                index_label='date',
                 schema=os.getenv('POSTGRES_SCHEMA')
             )
         logger.info("Data successfully inserted.")

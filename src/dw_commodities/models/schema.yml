@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: dw_commodities
+    schema: dw_comm
+    tables:
+      - name: commodities
+        description: "Tabela que contém dados históricos de commodities"
+        columns:
+          - name: DATE
+            description: "Data da observação"
+          - name: CLOSE
+            description: "Preço de fechamento da commodity"
+          - name: TICKER
+            description: "Símbolo da commodity"
+
+      - name: moviment_commodities
+        description: "Tabela seed"
+        columns:
+          - name: DATE
+            description: "Data da transação"
+          - name: TICKER
+            description: "Símbolo da commodity"
+          - name: ACTION
+            description: "Tipo de transação (buy/sell)"
+          - name: QUANTITY
+            description: "Quantidade transacionada"

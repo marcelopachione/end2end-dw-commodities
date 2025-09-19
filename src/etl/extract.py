@@ -45,19 +45,7 @@ def fetch_ticker(ticker, period='5d', interval='1d'):
 def concat_tickers(commodities):
     """
     Fetch and combine historical data for multiple tickers.
-
-    Parameters
-    ----------
-    commodities
-        List (or other iterable) of ticker commodities.
-
-    Returns
-    -------
-    pd.DataFrame
-        Concatenated DataFrame of all commodities' data.
-        Empty DataFrame if no data is retrieved.
     """
-
     frames = []
 
     for symbol in commodities:
@@ -66,6 +54,10 @@ def concat_tickers(commodities):
             frames.append(df)
 
     if not frames:            
-        return pd.DataFrame(columns=["Close", "ticker"])
+        return pd.DataFrame(columns=["close", "ticker"])
 
-    return pd.concat(frames, ignore_index=False)
+    result = pd.concat(frames, ignore_index=False)
+
+    result.columns = result.columns.str.lower()
+
+    return result
