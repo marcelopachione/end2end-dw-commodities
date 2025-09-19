@@ -10,9 +10,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def main():
+    commodities = ['CL=F', 'GC=F', 'SI=F']
+    
     conn = connect_to_database()
     create_schema(conn)
-    commodities = ['CL=F', 'GC=F', 'SI=F']
     concatenated_tickers = concat_tickers(commodities)
     tb_commodities = save_to_db(concatenated_tickers, 'commodities')
 
